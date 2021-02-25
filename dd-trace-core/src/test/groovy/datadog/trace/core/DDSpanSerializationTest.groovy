@@ -1,6 +1,7 @@
 package datadog.trace.core
 
 import datadog.trace.api.DDId
+import datadog.trace.api.WellKnownTags
 import datadog.trace.api.sampling.PrioritySampling
 import datadog.trace.common.writer.ListWriter
 import datadog.trace.common.writer.ddagent.TraceMapperV0_4
@@ -133,6 +134,7 @@ class DDSpanSerializationTest extends DDCoreSpecification {
       DDId.ONE,
       DDId.ONE,
       DDId.ZERO,
+      new WellKnownTags("fakeHostname", "fakeEnv", "fakeService", "fakeVersion"),
       null,
       "fakeService",
       "fakeOperation",
@@ -202,6 +204,7 @@ class DDSpanSerializationTest extends DDCoreSpecification {
       DDId.ONE,
       DDId.ONE,
       DDId.ZERO,
+      new WellKnownTags("fakeHostname", "fakeEnv", "fakeService", "fakeVersion"),
       null,
       "fakeService",
       "fakeOperation",
@@ -281,6 +284,7 @@ class DDSpanSerializationTest extends DDCoreSpecification {
       value,
       value,
       DDId.ZERO,
+      new WellKnownTags("fakeHostname", "fakeEnv", "fakeService", "fakeVersion"),
       null,
       "fakeService",
       "fakeOperation",

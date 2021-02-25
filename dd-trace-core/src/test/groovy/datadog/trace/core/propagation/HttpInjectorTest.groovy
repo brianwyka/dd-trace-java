@@ -2,6 +2,7 @@ package datadog.trace.core.propagation
 
 import datadog.trace.api.Config
 import datadog.trace.api.DDId
+import datadog.trace.api.WellKnownTags
 import datadog.trace.api.sampling.PrioritySampling
 import datadog.trace.common.writer.ListWriter
 import datadog.trace.core.DDSpanContext
@@ -29,6 +30,7 @@ class HttpInjectorTest extends DDCoreSpecification {
         traceId,
         spanId,
         DDId.ZERO,
+        new WellKnownTags("fakeHostname", "fakeEnv", "fakeService", "fakeVersion"),
         null,
         "fakeService",
         "fakeOperation",

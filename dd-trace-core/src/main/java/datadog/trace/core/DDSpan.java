@@ -396,6 +396,11 @@ public class DDSpan implements AgentSpan, CoreSpan<DDSpan> {
   }
 
   @Override
+  public CharSequence getEnv() {
+    return context.getEnv();
+  }
+
+  @Override
   public Integer getSamplingPriority() {
     final int samplingPriority = context.getSamplingPriority();
     if (samplingPriority == PrioritySampling.UNSET) {

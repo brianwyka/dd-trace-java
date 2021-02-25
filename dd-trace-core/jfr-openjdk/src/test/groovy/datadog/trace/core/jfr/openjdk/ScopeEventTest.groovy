@@ -2,6 +2,7 @@ package datadog.trace.core.jfr.openjdk
 
 import com.timgroup.statsd.NoOpStatsDClient
 import datadog.trace.api.DDId
+import datadog.trace.api.WellKnownTags
 import datadog.trace.api.config.GeneralConfig
 import datadog.trace.api.config.ProfilingConfig
 import datadog.trace.api.sampling.PrioritySampling
@@ -150,6 +151,7 @@ class ScopeEventTest extends DDSpecification {
         DDId.from(123),
         DDId.from(432),
         DDId.from(222),
+        new WellKnownTags("fakeHostname", "fakeEnv", "fakeService", "fakeVersion"),
         null,
         "fakeService",
         "fakeOperation",

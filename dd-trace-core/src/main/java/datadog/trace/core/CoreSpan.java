@@ -53,6 +53,8 @@ public interface CoreSpan<T extends CoreSpan<T>> {
 
   <U> U getTag(CharSequence name);
 
+  CharSequence getEnv();
+
   boolean hasSamplingPriority();
 
   boolean isMeasured();

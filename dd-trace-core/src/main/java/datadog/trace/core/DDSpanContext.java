@@ -3,6 +3,7 @@ package datadog.trace.core;
 import datadog.trace.api.DDId;
 import datadog.trace.api.DDTags;
 import datadog.trace.api.Functions;
+import datadog.trace.api.WellKnownTags;
 import datadog.trace.api.cache.DDCache;
 import datadog.trace.api.cache.DDCaches;
 import datadog.trace.api.sampling.PrioritySampling;
@@ -52,6 +53,8 @@ public class DDSpanContext implements AgentSpan.Context {
   private final long threadId;
   private final UTF8BytesString threadName;
 
+  private final WellKnownTags wellKnownTags;
+
   /**
    * Tags are associated to the current span, they will not propagate to the children span.
    *
@@ -95,6 +98,7 @@ public class DDSpanContext implements AgentSpan.Context {
       final DDId traceId,
       final DDId spanId,
       final DDId parentId,
+      final WellKnownTags wellKnownTags,
       final CharSequence parentServiceName,
       final String serviceName,
       final CharSequence operationName,
@@ -117,6 +121,7 @@ public class DDSpanContext implements AgentSpan.Context {
     this.spanId = spanId;
     this.parentId = parentId;
     this.parentServiceName = String.valueOf(parentServiceName);
+    this.wellKnownTags = wellKnownTags;
 
     if (baggageItems == null || baggageItems.isEmpty()) {
       this.baggageItems = EMPTY_BAGGAGE;
@@ -307,6 +312,10 @@ public class DDSpanContext implements AgentSpan.Context {
     } else {
       return origin;
     }
+  }
+
+  public CharSequence getEnv() {
+    return wellKnownTags.getEnv();
   }
 
   public void setBaggageItem(final String key, final String value) {

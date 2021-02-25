@@ -1,6 +1,7 @@
 package datadog.trace.common.metrics
 
 import datadog.trace.api.Config
+import datadog.trace.api.WellKnownTags
 import datadog.trace.test.util.DDSpecification
 import spock.lang.Requires
 
@@ -14,7 +15,7 @@ class MetricsAggregatorFactoryTest extends DDSpecification {
     Config config = Mock(Config)
     config.isTracerMetricsEnabled() >> false
     expect:
-    def aggregator = MetricsAggregatorFactory.createMetricsAggregator(config)
+    def aggregator = MetricsAggregatorFactory.createMetricsAggregator(Mock(WellKnownTags), config)
     assert aggregator instanceof NoOpMetricsAggregator
   }
 
@@ -23,7 +24,7 @@ class MetricsAggregatorFactoryTest extends DDSpecification {
     Config config = Spy(Config.get())
     config.isTracerMetricsEnabled() >> true
     expect:
-    def aggregator = MetricsAggregatorFactory.createMetricsAggregator(config)
+    def aggregator = MetricsAggregatorFactory.createMetricsAggregator(Mock(WellKnownTags), config)
     assert aggregator instanceof ConflatingMetricsAggregator
   }
 }

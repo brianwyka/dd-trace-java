@@ -4,6 +4,7 @@ import datadog.trace.api.Function;
 import datadog.trace.api.cache.DDCache;
 import datadog.trace.api.cache.DDCaches;
 import datadog.trace.api.sampling.PrioritySampling;
+import datadog.trace.bootstrap.instrumentation.api.UTF8BytesString;
 import datadog.trace.common.writer.ddagent.DDAgentResponseListener;
 import datadog.trace.core.CoreSpan;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ public class RateByServiceSampler<T extends CoreSpan<T>>
   @Override
   public void setSamplingPriority(final T span) {
     final String serviceName = span.getServiceName();
-    final String env = getSpanEnv(span);
+    final CharSequence env = span.getEnv();
 
     final RateSamplersByEnvAndService<T> rates = serviceRates;
     RateSampler<T> sampler = rates.getSampler(new EnvAndService(env, serviceName));
@@ -49,10 +50,6 @@ public class RateByServiceSampler<T extends CoreSpan<T>>
       span.setSamplingPriority(
           PrioritySampling.SAMPLER_DROP, SAMPLING_AGENT_RATE, sampler.getSampleRate());
     }
-  }
-
-  private String getSpanEnv(final T span) {
-    return span.getTag("env", "");
   }
 
   @Override
@@ -128,11 +125,11 @@ public class RateByServiceSampler<T extends CoreSpan<T>>
             }
             String service = key.substring(serviceStart, serviceEnd);
             String env = key.substring(envStart);
-            return new EnvAndService(env, service);
+            return new EnvAndService(UTF8BytesString.create(env), service);
           }
         };
 
-    static final EnvAndService DEFAULT = new EnvAndService("", "");
+    static final EnvAndService DEFAULT = new EnvAndService(UTF8BytesString.EMPTY, "");
 
     public static EnvAndService fromString(String key) {
       return CACHE.computeIfAbsent(key, PARSE);
@@ -149,9 +146,11 @@ public class RateByServiceSampler<T extends CoreSpan<T>>
     @Override
     public boolean equals(Object o) {
       if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
-      EnvAndService that = (EnvAndService) o;
-      return env.equals(that.env) && service.equals(that.service);
+      if (o instanceof EnvAndService) {
+        EnvAndService that = (EnvAndService) o;
+        return env.equals(that.env) && service.equals(that.service);
+      }
+      return false;
     }
 
     @Override

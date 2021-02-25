@@ -1,6 +1,7 @@
 package datadog.trace.core
 
 import datadog.trace.api.DDId
+import datadog.trace.api.WellKnownTags
 import datadog.trace.api.sampling.PrioritySampling
 import datadog.trace.bootstrap.instrumentation.api.AgentSpan
 import datadog.trace.bootstrap.instrumentation.api.UTF8BytesString
@@ -246,6 +247,7 @@ class DDSpanTest extends DDCoreSpecification {
         DDId.from(1),
         DDId.from(1),
         DDId.ZERO,
+        new WellKnownTags("fakeHostname", "fakeEnv", "fakeService", "fakeVersion"),
         parentServiceName,
         "fakeService",
         "fakeOperation",

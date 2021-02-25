@@ -158,6 +158,11 @@ class SimpleSpan implements CoreSpan<SimpleSpan> {
   }
 
   @Override
+  CharSequence getEnv() {
+    return "test"
+  }
+
+  @Override
   boolean hasSamplingPriority() {
     return false
   }

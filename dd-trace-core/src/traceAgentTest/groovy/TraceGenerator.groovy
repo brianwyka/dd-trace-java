@@ -349,6 +349,11 @@ class TraceGenerator {
     }
 
     @Override
+    CharSequence getEnv() {
+      return "test"
+    }
+
+    @Override
     boolean hasSamplingPriority() {
       return false
     }

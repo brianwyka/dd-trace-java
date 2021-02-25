@@ -48,9 +48,9 @@ public final class ConflatingMetricsAggregator implements MetricsAggregator, Eve
   private volatile boolean enabled = true;
   private volatile AgentTaskScheduler.Scheduled<?> cancellation;
 
-  public ConflatingMetricsAggregator(Config config) {
+  public ConflatingMetricsAggregator(WellKnownTags wellKnownTags, Config config) {
     this(
-        config.getWellKnownTags(),
+        wellKnownTags,
         new OkHttpSink(
             config.getAgentUrl(),
             config.getAgentTimeout(),

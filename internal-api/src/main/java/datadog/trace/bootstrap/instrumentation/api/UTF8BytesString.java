@@ -10,7 +10,7 @@ import java.nio.ByteBuffer;
  */
 public final class UTF8BytesString implements CharSequence {
 
-  public static final UTF8BytesString EMPTY = UTF8BytesString.create("");
+  public static final UTF8BytesString EMPTY = new UTF8BytesString("");
 
   @Deprecated
   public static UTF8BytesString createConstant(CharSequence string) {
@@ -23,7 +23,7 @@ public final class UTF8BytesString implements CharSequence {
     } else if (sequence instanceof UTF8BytesString) {
       return (UTF8BytesString) sequence;
     } else {
-      return new UTF8BytesString(String.valueOf(sequence));
+      return sequence.length() == 0 ? EMPTY : new UTF8BytesString(String.valueOf(sequence));
     }
   }
 

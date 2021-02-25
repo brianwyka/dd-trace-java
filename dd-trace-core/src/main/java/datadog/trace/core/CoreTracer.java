@@ -11,6 +11,7 @@ import com.timgroup.statsd.StatsDClientException;
 import datadog.trace.api.Config;
 import datadog.trace.api.DDId;
 import datadog.trace.api.IdGenerationStrategy;
+import datadog.trace.api.WellKnownTags;
 import datadog.trace.api.config.GeneralConfig;
 import datadog.trace.api.interceptor.MutableSpan;
 import datadog.trace.api.interceptor.TraceInterceptor;
@@ -104,6 +105,7 @@ public class CoreTracer implements AgentTracer.TracerAPI {
   private final IdGenerationStrategy idGenerationStrategy;
   private final PendingTrace.Factory pendingTraceFactory;
   private final TraceProcessor traceProcessor = new TraceProcessor();
+  private final WellKnownTags wellKnownTags;
 
   /**
    * JVM shutdown callback, keeping a reference to it to remove this if DDTracer gets destroyed
@@ -191,6 +193,8 @@ public class CoreTracer implements AgentTracer.TracerAPI {
     assert serviceNameMappings != null;
     assert taggedHeaders != null;
 
+    this.wellKnownTags = config.getWellKnownTags();
+
     this.serviceName = serviceName;
     this.sampler = sampler;
     this.injector = injector;
@@ -243,7 +247,7 @@ public class CoreTracer implements AgentTracer.TracerAPI {
 
     this.writer.start();
 
-    metricsAggregator = createMetricsAggregator(config);
+    metricsAggregator = createMetricsAggregator(wellKnownTags, config);
     // Schedule the metrics aggregator to begin reporting after a random delay of 1 to 10 seconds
     // (using milliseconds granularity.) This avoids a fleet of traced applications starting at the
     // same time from sending metrics in sync.
@@ -788,6 +792,7 @@ public class CoreTracer implements AgentTracer.TracerAPI {
               traceId,
               spanId,
               parentSpanId,
+              wellKnownTags,
               parentServiceName,
               serviceName,
               operationName,

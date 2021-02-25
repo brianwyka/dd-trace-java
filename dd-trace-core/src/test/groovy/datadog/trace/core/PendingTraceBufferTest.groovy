@@ -2,6 +2,7 @@ package datadog.trace.core
 
 import com.timgroup.statsd.NoOpStatsDClient
 import datadog.trace.api.DDId
+import datadog.trace.api.WellKnownTags
 import datadog.trace.api.sampling.PrioritySampling
 import datadog.trace.bootstrap.instrumentation.api.ScopeSource
 import datadog.trace.context.TraceScope
@@ -290,6 +291,7 @@ class PendingTraceBufferTest extends DDSpecification {
       trace.traceId,
       DDId.from(1),
       DDId.ZERO,
+      new WellKnownTags("fakeHostname", "fakeEnv", "fakeService", "fakeVersion"),
       null,
       "fakeService",
       "fakeOperation",
@@ -310,6 +312,7 @@ class PendingTraceBufferTest extends DDSpecification {
       trace.traceId,
       DDId.from(2),
       parent.context().spanId,
+      new WellKnownTags("fakeHostname", "fakeEnv", "fakeService", "fakeVersion"),
       null,
       "fakeService",
       "fakeOperation",

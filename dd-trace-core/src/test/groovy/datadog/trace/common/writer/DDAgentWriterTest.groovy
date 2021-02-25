@@ -2,6 +2,7 @@ package datadog.trace.common.writer
 
 import com.timgroup.statsd.NoOpStatsDClient
 import datadog.trace.api.DDId
+import datadog.trace.api.WellKnownTags
 import datadog.trace.api.sampling.PrioritySampling
 import datadog.trace.common.writer.ddagent.DDAgentApi
 import datadog.trace.common.writer.ddagent.DDAgentFeaturesDiscovery
@@ -173,6 +174,7 @@ class DDAgentWriterTest extends DDCoreSpecification {
       DDId.from(1),
       DDId.from(1),
       DDId.ZERO,
+      new WellKnownTags("fakeHostname", "fakeEnv", "fakeService", "fakeVersion"),
       null,
       "",
       "",
