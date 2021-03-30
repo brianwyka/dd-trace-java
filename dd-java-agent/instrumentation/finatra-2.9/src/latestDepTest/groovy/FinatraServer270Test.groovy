@@ -101,6 +101,7 @@ class FinatraServer270Test extends HttpServerTest<HttpServer> {
       tags {
         "$Tags.COMPONENT" FinatraDecorator.DECORATE.component()
         "$Tags.SPAN_KIND" Tags.SPAN_KIND_SERVER
+        "$Tags.HTTP_ROUTE" String
 
         // Finatra doesn't propagate the stack trace or exception to the instrumentation
         // so the normal errorTags() method can't be used
