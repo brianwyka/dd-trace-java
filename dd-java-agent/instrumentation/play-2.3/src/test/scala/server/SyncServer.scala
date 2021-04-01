@@ -58,6 +58,12 @@ object SyncServer {
           throw new Exception(EXCEPTION.getBody)
         }))
       }
+    case ("GET", "/not-found") =>
+      Action { request =>
+        HttpServerTest.controller(EXCEPTION, new BlockClosureAdapter(() => {
+          throw new Exception("nOT fOuNd")
+        }))
+      }
   }
 
   def server(port: Int): TestServer = {
